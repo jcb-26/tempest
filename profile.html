@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Tempest</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="logo.png">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-top">
+            <a href="index.html" class="logo">
+                <span class="logo-market">Tempest</span>
+                <img src="logo.png" class="logo-img" alt="Tempest logo">
+            </a>
+            <form class="search-bar" onsubmit="event.preventDefault(); window.location.href='index.html?search=' + encodeURIComponent(this.querySelector('input').value);">
+                <input type="text" placeholder="Search for items...">
+                <button type="submit">Search</button>
+            </form>
+            <div class="user-actions">
+                <button type="button" class="login-btn" id="signin-trigger">Sign In&nbsp;/&nbsp;Register</button>
+                <div class="user-info" id="user-info" style="display: none;">
+                    <span class="user-greeting" id="user-greeting"></span>
+                    <span class="user-balance" id="user-balance"></span>
+                    <a href="my-items.html" class="my-items-link">My Items</a>
+                    <button type="button" class="logout-btn" id="logout-btn">Sign Out</button>
+                </div>
+                <a href="cart.html" class="cart-link">My Cart (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="squallers.html">Top Squallers</a></li>
+                <li><a href="deals.html">Daily Deals</a></li>
+                <li><a href="sellers.html">Recently Traded</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <!-- Loading state -->
+        <div class="profile-state" id="profile-loading">
+            <p class="listings-loading">Loading profile...</p>
+        </div>
+
+        <!-- User not found state -->
+        <div class="profile-state" id="profile-not-found" style="display: none;">
+            <h1 class="page-title">Profile Not Found</h1>
+            <div class="cart-empty-state">
+                <p>That Squaller doesn't exist.</p>
+                <a href="squallers.html" class="signin-submit" style="display: inline-block; text-decoration: none; max-width: 240px;">Browse Top Squallers</a>
+            </div>
+        </div>
+
+        <!-- Logged-out viewing own profile state -->
+        <div class="profile-state" id="profile-signed-out" style="display: none;">
+            <h1 class="page-title">My Profile</h1>
+            <div class="cart-empty-state">
+                <p>Sign in to view your profile.</p>
+                <button type="button" class="signin-submit" id="profile-signin-btn">Sign In</button>
+            </div>
+        </div>
+
+        <!-- Main profile content -->
+        <div class="profile-state" id="profile-content" style="display: none;">
+
+            <!-- Profile header card -->
+            <div class="profile-header-card">
+                <div class="profile-identity">
+                    <h1 class="profile-username" id="profile-username"></h1>
+                    <span class="follows-you-tag" id="follows-you-tag" style="display: none;">Follows you</span>
+                </div>
+
+                <div class="profile-actions" id="profile-actions" style="display: none;">
+                    <button type="button" class="follow-btn" id="follow-btn"></button>
+                </div>
+            </div>
+
+            <!-- Stats grid -->
+            <div class="profile-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Wallet</div>
+                    <div class="stat-value stat-value-money" id="stat-squalls"></div>
+                    <div class="stat-sub">Available squalls</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Item Holdings</div>
+                    <div class="stat-value stat-value-money" id="stat-item-value"></div>
+                    <div class="stat-sub"><span id="stat-item-count">0</span> items owned</div>
+                </div>
+                <div class="stat-card stat-card-highlight">
+                    <div class="stat-label">Net Worth</div>
+                    <div class="stat-value stat-value-money" id="stat-net-worth"></div>
+                    <div class="stat-sub">Cash + items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Social</div>
+                    <div class="stat-value-social">
+                        <div class="social-stat">
+                            <span class="social-number" id="stat-followers">0</span>
+                            <span class="social-label">followers</span>
+                        </div>
+                        <div class="social-stat">
+                            <span class="social-number" id="stat-following">0</span>
+                            <span class="social-label">following</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs + items -->
+            <div class="my-items-tabs">
+                <button type="button" class="my-items-tab is-active" data-tab="all">All Items <span class="tab-count" id="tab-count-all">0</span></button>
+                <button type="button" class="my-items-tab" data-tab="listed">For Sale <span class="tab-count" id="tab-count-listed">0</span></button>
+                <button type="button" class="my-items-tab" data-tab="unlisted">Owned (Not Listed) <span class="tab-count" id="tab-count-unlisted">0</span></button>
+            </div>
+
+            <div class="listings-grid" id="profile-items-grid"></div>
+
+        </div>
+
+    </main>
+
+    <!-- Modals (sign in, register, forgot) -->
+    <div class="modal-overlay" id="signin-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Sign In to Tempest</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="signin-error"></div>
+                <form id="signin-form">
+                    <label for="signin-email">Email:</label>
+                    <input type="text" id="signin-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+                    <label for="signin-password">Password:</label>
+                    <input type="password" id="signin-password" name="password" autocomplete="current-password">
+                    <a href="#" class="register-link" id="switch-to-forgot">Forgot your password?</a>
+                    <a href="#" class="register-link" id="switch-to-register">Aren't a Squaller? Register now!</a>
+                    <button type="submit" class="signin-submit">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Become a Squaller</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="register-error"></div>
+                <div class="form-success" id="register-success"></div>
+                <form id="register-form">
+                    <label for="register-username">Username:</label>
+                    <input type="text" id="register-username" name="username" placeholder="MatthewManzi26" autocomplete="username">
+                    <label for="register-email">Email:</label>
+                    <input type="text" id="register-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" name="password" autocomplete="new-password">
+                    <a href="#" class="register-link" id="switch-to-signin">Already a Squaller? Sign in instead.</a>
+                    <button type="submit" class="signin-submit">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="forgot-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Forgot Your Password?</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="forgot-error"></div>
+                <div class="form-success" id="forgot-success"></div>
+                <p class="forgot-hint">Enter your email and we'll send you a link to reset your password.</p>
+                <form id="forgot-form">
+                    <label for="forgot-email">Email:</label>
+                    <input type="text" id="forgot-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+                    <a href="#" class="register-link" id="forgot-back-to-signin">Back to sign in</a>
+                    <button type="submit" class="signin-submit">Send Reset Link</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Tempest Inc. &nbsp;|&nbsp; <a href="about.html">About</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth-shared.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Items - Tempest</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="logo.png">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-top">
+            <a href="index.html" class="logo">
+                <span class="logo-market">Tempest</span>
+                <img src="logo.png" class="logo-img" alt="Tempest logo">
+            </a>
+            <form class="search-bar" onsubmit="event.preventDefault(); window.location.href='index.html?search=' + encodeURIComponent(this.querySelector('input').value);">
+                <input type="text" placeholder="Search for items...">
+                <button type="submit">Search</button>
+            </form>
+            <div class="user-actions">
+                <button type="button" class="login-btn" id="signin-trigger">Sign In&nbsp;/&nbsp;Register</button>
+                <div class="user-info" id="user-info" style="display: none;">
+                    <span class="user-greeting" id="user-greeting"></span>
+                    <span class="user-balance" id="user-balance"></span>
+                    <a href="my-items.html" class="my-items-link">My Items</a>
+                    <button type="button" class="logout-btn" id="logout-btn">Sign Out</button>
+                </div>
+                <a href="cart.html" class="cart-link">My Cart (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="squallers.html">Top Squallers</a></li>
+                <li><a href="deals.html">Daily Deals</a></li>
+                <li><a href="sellers.html">Recently Traded</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">My Items</h1>
+        <p class="page-subtitle" id="page-subtitle">Items you currently own.</p>
+
+        <div class="cart-empty-state" id="signed-out" style="display: none;">
+            <p>You must be signed in to view your items.</p>
+            <button type="button" class="signin-submit" id="page-signin-btn">Sign In</button>
+        </div>
+
+        <div class="cart-empty-state" id="empty-state" style="display: none;">
+            <p>You don't own any items yet.</p>
+            <a href="index.html" class="signin-submit" style="display: inline-block; text-decoration: none; max-width: 240px;">Start Browsing</a>
+        </div>
+
+        <div class="my-items-layout" id="items-layout" style="display: none;">
+
+            <div class="my-items-stats" id="items-stats"></div>
+
+            <div class="my-items-tabs">
+                <button type="button" class="my-items-tab is-active" data-tab="all">All Items</button>
+                <button type="button" class="my-items-tab" data-tab="listed">Listed for Sale</button>
+                <button type="button" class="my-items-tab" data-tab="unlisted">Not Listed</button>
+            </div>
+
+            <div class="listings-grid" id="my-items-grid"></div>
+
+            <h2 class="section-title">Purchase History</h2>
+            <div class="history-list" id="history-list"></div>
+
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="relist-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="relist-title">List for Sale</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="relist-error"></div>
+                <div class="form-success" id="relist-success"></div>
+                <p class="relist-item-label" id="relist-item-name"></p>
+                <form id="relist-form">
+                    <label for="relist-price">Asking Price (in squalls):</label>
+                    <input type="number" id="relist-price" name="price" min="1" max="1000000" placeholder="500">
+                    <p class="relist-hint">Other Squallers will be able to buy this item from you. You'll receive the full asking price.</p>
+                    <button type="submit" class="signin-submit">List Item for Sale</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="signin-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Sign In to Tempest</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="signin-error"></div>
+                <form id="signin-form">
+                    <label for="signin-email">Email:</label>
+                    <input type="text" id="signin-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+                    <label for="signin-password">Password:</label>
+                    <input type="password" id="signin-password" name="password" autocomplete="current-password">
+                    <a href="#" class="register-link" id="switch-to-forgot">Forgot your password?</a>
+                    <a href="#" class="register-link" id="switch-to-register">Aren't a Squaller? Register now!</a>
+                    <button type="submit" class="signin-submit">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Become a Squaller</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="register-error"></div>
+                <div class="form-success" id="register-success"></div>
+                <form id="register-form">
+                    <label for="register-username">Username:</label>
+                    <input type="text" id="register-username" name="username" placeholder="MatthewManzi26" autocomplete="username">
+                    <label for="register-email">Email:</label>
+                    <input type="text" id="register-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" name="password" autocomplete="new-password">
+                    <a href="#" class="register-link" id="switch-to-signin">Already a Squaller? Sign in instead.</a>
+                    <button type="submit" class="signin-submit">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="forgot-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Forgot Your Password?</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="forgot-error"></div>
+                <div class="form-success" id="forgot-success"></div>
+
+                <p class="forgot-hint">Enter your email and we'll send you a link to reset your password.</p>
+
+                <form id="forgot-form">
+                    <label for="forgot-email">Email:</label>
+                    <input type="text" id="forgot-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+
+                    <a href="#" class="register-link" id="forgot-back-to-signin">Back to sign in</a>
+
+                    <button type="submit" class="signin-submit">Send Reset Link</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Tempest Inc. &nbsp;|&nbsp; <a href="about.html">About</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth-shared.js"></script>
+    <script src="my-items.js"></script>
+</body>
+</html>

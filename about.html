@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Tempest</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="logo.png">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-top">
+            <a href="index.html" class="logo">
+                <span class="logo-market">Tempest</span>
+                <img src="logo.png" class="logo-img" alt="Tempest logo">
+            </a>
+            <form class="search-bar" onsubmit="event.preventDefault(); window.location.href='index.html?search=' + encodeURIComponent(this.querySelector('input').value);">
+                <input type="text" placeholder="Search for items...">
+                <button type="submit">Search</button>
+            </form>
+            <div class="user-actions">
+                <button type="button" class="login-btn" id="signin-trigger">Sign In&nbsp;/&nbsp;Register</button>
+                <div class="user-info" id="user-info" style="display: none;">
+                    <span class="user-greeting" id="user-greeting"></span>
+                    <span class="user-balance" id="user-balance"></span>
+                    <a href="my-items.html" class="my-items-link">My Items</a>
+                    <button type="button" class="logout-btn" id="logout-btn">Sign Out</button>
+                </div>
+                <a href="cart.html" class="cart-link">My Cart (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="squallers.html">Top Squallers</a></li>
+                <li><a href="deals.html">Daily Deals</a></li>
+                <li><a href="sellers.html">Recently Traded</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">About Tempest</h1>
+
+        <article class="about-content">
+            <section class="about-section">
+                <h2>What is Tempest?</h2>
+                <p>Tempest is a fun, competitive trading platform where Saint Mary's students buy and sell digital ownership of real campus landmarks and items. Items up for sale include the De La Salle Statue, MoA sculptures, a Gael Smiski, and dozens of other objects that SMC home.</p>
+                <p>Every item on the marketplace has a stock of one. When you buy something, only you own it, until you decide to put it back on the market.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>How It Works</h2>
+                <p>New Squallers start with ؏1,000 in their wallet (squalls are our in-app currency). You can earn more by attending campus events, referring friends, and participating in school activities. Spend your squalls on items in the marketplace and watch your collection grow.</p>
+                <p>Listed an item too low? Bought something at a steal? Resell it for whatever price you want. Other Squallers can buy it from you, and the squalls go straight into your wallet. The market sets the price.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>The Leaderboard</h2>
+                <p>Every Squaller is ranked by their squalls. Climb to the top by trading, spotting daily deals, and building a collection that grows in value over time.</p>
+            </section>
+
+            <section class="about-section">
+                <h2>Daily Deals</h2>
+                <p>Every day at midnight, four random items get marked down by 25%. Discounts only apply when you actually buy the item, so adding to cart isn't enough.</p>
+            </section>
+
+            <section class="about-section about-cta">
+                <p>Sign up, claim your first ؏1,000, and start trading.</p>
+                <button type="button" class="signin-submit about-cta-btn" id="about-signup-btn" style="display: none;">Become a Squaller</button>
+                <p class="about-already-signed-in" id="about-already" style="display: none;">You're already signed in. <a href="index.html">Browse the marketplace &raquo;</a></p>
+            </section>
+        </article>
+    </main>
+
+    <div class="modal-overlay" id="signin-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Sign In to Tempest</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="signin-error"></div>
+                <form id="signin-form">
+                    <label for="signin-email">Email:</label>
+                    <input type="text" id="signin-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+                    <label for="signin-password">Password:</label>
+                    <input type="password" id="signin-password" name="password" autocomplete="current-password">
+                    <a href="#" class="register-link" id="switch-to-forgot">Forgot your password?</a>
+                    <a href="#" class="register-link" id="switch-to-register">Aren't a Squaller? Register now!</a>
+                    <button type="submit" class="signin-submit">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Become a Squaller</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="register-error"></div>
+                <div class="form-success" id="register-success"></div>
+                <form id="register-form">
+                    <label for="register-username">Username:</label>
+                    <input type="text" id="register-username" name="username" placeholder="MatthewManzi26" autocomplete="username">
+                    <label for="register-email">Email:</label>
+                    <input type="text" id="register-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" name="password" autocomplete="new-password">
+                    <a href="#" class="register-link" id="switch-to-signin">Already a Squaller? Sign in instead.</a>
+                    <button type="submit" class="signin-submit">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="forgot-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Forgot Your Password?</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="forgot-error"></div>
+                <div class="form-success" id="forgot-success"></div>
+
+                <p class="forgot-hint">Enter your email and we'll send you a link to reset your password.</p>
+
+                <form id="forgot-form">
+                    <label for="forgot-email">Email:</label>
+                    <input type="text" id="forgot-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+
+                    <a href="#" class="register-link" id="forgot-back-to-signin">Back to sign in</a>
+
+                    <button type="submit" class="signin-submit">Send Reset Link</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Tempest Inc. &nbsp;|&nbsp; <a href="about.html">About</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth-shared.js"></script>
+    <script>
+        // Show register button or "already signed in" message based on auth state
+        document.addEventListener('DOMContentLoaded', function () {
+            async function updateCta() {
+                const profile = await window.tempest.getCurrentProfile();
+                const signupBtn = document.getElementById('about-signup-btn');
+                const already = document.getElementById('about-already');
+                if (profile) {
+                    signupBtn.style.display = 'none';
+                    already.style.display = 'block';
+                } else {
+                    signupBtn.style.display = 'inline-block';
+                    already.style.display = 'none';
+                }
+            }
+            updateCta();
+            document.getElementById('about-signup-btn').addEventListener('click', function () {
+                document.getElementById('register-modal').classList.add('is-open');
+                document.getElementById('register-username').focus();
+            });
+            window.addEventListener('tempest:auth-changed', updateCta);
+        });
+    </script>
+</body>
+</html>

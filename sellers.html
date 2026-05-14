@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recently Traded - Tempest</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="logo.png">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-top">
+            <a href="index.html" class="logo">
+                <span class="logo-market">Tempest</span>
+                <img src="logo.png" class="logo-img" alt="Tempest logo">
+            </a>
+            <form class="search-bar" onsubmit="event.preventDefault(); window.location.href='index.html?search=' + encodeURIComponent(this.querySelector('input').value);">
+                <input type="text" placeholder="Search for items...">
+                <button type="submit">Search</button>
+            </form>
+            <div class="user-actions">
+                <button type="button" class="login-btn" id="signin-trigger">Sign In&nbsp;/&nbsp;Register</button>
+                <div class="user-info" id="user-info" style="display: none;">
+                    <span class="user-greeting" id="user-greeting"></span>
+                    <span class="user-balance" id="user-balance"></span>
+                    <a href="my-items.html" class="my-items-link">My Items</a>
+                    <button type="button" class="logout-btn" id="logout-btn">Sign Out</button>
+                </div>
+                <a href="cart.html" class="cart-link">My Cart (<span id="cart-count">0</span>)</a>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="squallers.html">Top Squallers</a></li>
+                <li><a href="deals.html">Daily Deals</a></li>
+                <li><a href="sellers.html">Recently Traded</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="page-title">Recently Traded</h1>
+        <p class="page-subtitle">Live feed of every transaction across the Tempest marketplace.</p>
+
+        <div class="trades-list" id="trades-list">
+            <p class="listings-loading">Loading recent trades...</p>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="signin-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Sign In to Tempest</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="signin-error"></div>
+                <form id="signin-form">
+                    <label for="signin-email">Email:</label>
+                    <input type="text" id="signin-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+                    <label for="signin-password">Password:</label>
+                    <input type="password" id="signin-password" name="password" autocomplete="current-password">
+                    <a href="#" class="register-link" id="switch-to-forgot">Forgot your password?</a>
+                    <a href="#" class="register-link" id="switch-to-register">Aren't a Squaller? Register now!</a>
+                    <button type="submit" class="signin-submit">Sign In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="register-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Become a Squaller</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="register-error"></div>
+                <div class="form-success" id="register-success"></div>
+                <form id="register-form">
+                    <label for="register-username">Username:</label>
+                    <input type="text" id="register-username" name="username" placeholder="MatthewManzi26" autocomplete="username">
+                    <label for="register-email">Email:</label>
+                    <input type="text" id="register-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+                    <label for="register-password">Password:</label>
+                    <input type="password" id="register-password" name="password" autocomplete="new-password">
+                    <a href="#" class="register-link" id="switch-to-signin">Already a Squaller? Sign in instead.</a>
+                    <button type="submit" class="signin-submit">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="forgot-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>Forgot Your Password?</h2>
+                <button type="button" class="modal-close" data-close-modal aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-error" id="forgot-error"></div>
+                <div class="form-success" id="forgot-success"></div>
+
+                <p class="forgot-hint">Enter your email and we'll send you a link to reset your password.</p>
+
+                <form id="forgot-form">
+                    <label for="forgot-email">Email:</label>
+                    <input type="text" id="forgot-email" name="email" placeholder="you@stmarys-ca.edu" autocomplete="email">
+
+                    <a href="#" class="register-link" id="forgot-back-to-signin">Back to sign in</a>
+
+                    <button type="submit" class="signin-submit">Send Reset Link</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 Tempest Inc. &nbsp;|&nbsp; <a href="about.html">About</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <script src="auth-shared.js"></script>
+    <script src="sellers.js"></script>
+</body>
+</html>
