@@ -23,9 +23,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentFilter = 'all';
     let relistingItemId = null;
 
-
-    // ============== HELPERS ==============
-
     function escapeHtml(text) {
         if (text === null || text === undefined) return '';
         const div = document.createElement('div');
@@ -94,8 +91,15 @@ document.addEventListener('DOMContentLoaded', function () {
     function renderStats(profile) {
         const totalItems = currentItems.length;
         const listedCount = currentItems.filter(i => i.is_for_sale).length;
-        const totalValue = currentItems.reduce((sum, i) => sum + i.price, 0);
-        const netWorth = profile.squalls + totalValue;
+
+        const totalPaid = currentItems.reduce((sum, i) => {
+            const value = (i.owner_paid_price !== null && i.owner_paid_price !== undefined)
+                ? i.owner_paid_price
+                : i.price;
+            return sum + value;
+        }, 0);
+
+        const netWorth = profile.squalls + totalPaid;
 
         statsEl.innerHTML = `
             <div class="stat-card">
@@ -110,8 +114,8 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
             <div class="stat-card">
                 <div class="stat-label">Item Holdings</div>
-                <div class="stat-value stat-value-money">؏${totalValue.toLocaleString()}</div>
-                <div class="stat-sub">Combined item value</div>
+                <div class="stat-value stat-value-money">؏${totalPaid.toLocaleString()}</div>
+                <div class="stat-sub">Total spent on items</div>
             </div>
             <div class="stat-card stat-card-highlight">
                 <div class="stat-label">Net Worth</div>
@@ -161,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         itemsGrid.innerHTML = html;
 
-        // Wire up buttons
         itemsGrid.querySelectorAll('.relist-btn').forEach(btn => {
             btn.addEventListener('click', handleRelistClick);
         });
@@ -189,7 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
         relistPrice.value = '';
         relistTitle.textContent = 'List for Sale';
 
-        // Open the relist modal
         document.querySelectorAll('.modal-overlay.is-open').forEach(m => m.classList.remove('is-open'));
         relistModal.classList.add('is-open');
         relistPrice.focus();
